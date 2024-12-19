@@ -91,6 +91,9 @@ export const checkCollidingBricks = (ball, bricks, updateScore) => {
     const brick = bricks[i];
     const direction = getCollidingBrickDirection(ball, brick);
     if (direction) {
+      if (direction?.x === ball.speed.x) {
+        break;
+      }
       bricks.splice(i, 1);
       brick.destroy();
       updateScore(brick.score);
