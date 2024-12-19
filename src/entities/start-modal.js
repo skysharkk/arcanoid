@@ -31,7 +31,7 @@ export class StartModal {
     this.container.cursor = 'pointer';
 
     this.container.on('pointerdown', () => {
-      if(this.onClick) {
+      if (this.onClick) {
         this.onClick();
       }
     });

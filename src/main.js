@@ -1,5 +1,5 @@
 import { MAX_APP_WIDTH } from './constants/common';
-import { GameScreen} from './containers/game-screen';
+import { GameScreen } from './containers/game-screen';
 import { MainScreen } from './containers/main-screen';
 import { initAssets } from './helpers/init_assets';
 import './style.css'
