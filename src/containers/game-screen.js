@@ -1,4 +1,4 @@
-import { Application, Container, Text } from "pixi.js";
+import { Application, Container, Graphics, Text } from "pixi.js";
 import { Paddle } from "../entities/paddle";
 import { Ball } from "../entities/ball";
 import { BG_PADDING, BRICKS_PADDING, INFO_FIELD_HEIGHT, PADDLE_PADDING } from "../constants/common";
@@ -11,6 +11,7 @@ import { TextButton } from "../entities/text-button";
 import { Score } from "../entities/score";
 import { Attempts } from "../entities/attempts";
 import { Level } from "../entities/level";
+import { StartModal } from "../entities/start-modal";
 
 export class GameScreen extends EventTarget {
   /**
@@ -30,13 +31,10 @@ export class GameScreen extends EventTarget {
     this.backButton.onClick = () => {
       this.dispatchEvent(new Event('back'));
     };
-    this.startButton = new TextButton('Start', this.app.screen.width / 2, this.app.screen.height / 1.7);
-    this.startButton.onClick = () => {
+    this.startModal = new StartModal(0, INFO_FIELD_HEIGHT, this.app.screen.width, this.app.screen.height - INFO_FIELD_HEIGHT);
+    this.startModal.onClick = () => {
       this.startGame();
-    };
-    this.startButton.text.anchor.x = 0.5;
-    this.startButton.text.anchor.y = 0.5;
-    this.startButton.text.style.fontSize = 50;
+    }
 
     this.retryButton = new TextButton('retry', this.app.screen.width / 2, this.app.screen.height / 1.7);
     this.retryButton.onClick = () => {
@@ -98,7 +96,7 @@ export class GameScreen extends EventTarget {
 
   startGame() {
     this.ball.startFlying();
-    this.app.stage.removeChild(this.startButton.text);
+    this.app.stage.removeChild(this.startModal.container);
   };
 
   retryGame() {
@@ -139,7 +137,7 @@ export class GameScreen extends EventTarget {
         this.app.stage.addChild(this.gameOverText);
         this.app.stage.addChild(this.retryButton.text);
       } else {
-        this.app.stage.addChild(this.startButton.text);
+        this.app.stage.addChild(this.startModal.container);
       }
     }
     if (this.ball.isFlying) {
@@ -174,7 +172,7 @@ export class GameScreen extends EventTarget {
     this.app.stage.addChild(this.paddle.sprite);
     this.app.stage.addChild(this.ball.sprite);
     this.app.stage.addChild(this.backButton.text);
-    this.app.stage.addChild(this.startButton.text);
+    this.app.stage.addChild(this.startModal.container);
     this.app.stage.addChild(this.level.levelText);
 
     this.app.stage.addEventListener('pointermove', this.platformMoveEvent);
@@ -199,7 +197,7 @@ export class GameScreen extends EventTarget {
     this.bricks.forEach((brick) => {
       this.app.stage.addChild(brick.sprite);
     });
-    this.app.stage.addChild(this.startButton.text);
+    this.app.stage.addChild(this.startModal.container);
   }
 
   reset() {
@@ -226,7 +224,7 @@ export class GameScreen extends EventTarget {
     this.app.stage.removeChild(this.paddle.sprite);
     this.app.stage.removeChild(this.ball.sprite);
     this.app.stage.removeChild(this.backButton.text);
-    this.app.stage.removeChild(this.startButton.text);
+    this.app.stage.removeChild(this.startModal.container);
     this.app.stage.removeChild(this.level.levelText);
 
     this.app.stage.removeListener('pointermove', this.platformMoveEvent);
